@@ -1,3 +1,5 @@
+import re
+
 medical_records = [
     {
         'patient_id': 'P1001',
@@ -34,7 +36,13 @@ medical_records = [
 ]
 
 def find_invalid_records(patient_id, age, gender, diagnosis, medications, last_visit_id):
-    constraints = {}
+    constraints = {
+        'patient_id': isinstance(patient_id, str) and re.fullmatch('p\d+', patient_id, re.IGNORECASE),
+        'age': isinstance(age, int) and age >= 18,
+        'gender': isinstance(gender, str) and gender.lower() in ('male', 'female'),
+        'diagnosis': isinstance(diagnosis, str) and diagnosis is None,
+        'medications': isinstance(medications, list) and [isinstance(i, str) for i in medications]
+    }
     return constraints
 
 def validate(data):
@@ -60,3 +68,5 @@ def validate(data):
     print('Valid format.')
     return True
 
+validate(medical_records)
+print(find_invalid_records(**medical_records[0]))
