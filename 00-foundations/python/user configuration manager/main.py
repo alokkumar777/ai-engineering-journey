@@ -1,1 +1,18 @@
 # User configuration manager
+test_settings = {
+    "theme": "light",
+    "language": "english",
+    "notifications": "enabled"
+}
+
+# settings -> dict, settings_pair -> tuple
+def add_setting(settings, setting_pair):
+    key, value = setting_pair
+    key = key.lower()
+    value = value.lower()
+
+    if key in settings:
+        return f"Setting '{key}' already exists! Cannot add a new settings with this name."
+    else:
+        settings[key] = value
+        return f"Setting '{key}' added with value '{value}' successfully!"
